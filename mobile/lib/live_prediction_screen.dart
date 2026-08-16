@@ -161,7 +161,7 @@ class _LivePredictionScreenState extends State<LivePredictionScreen> {
 
 class _Team extends StatelessWidget {
   final String name, score, overs;
-  const _Team({required this.name, required this.score, required this.overs, super.key});
+  const _Team({required this.name, required this.score, required this.overs, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => Column(
     children: [
@@ -175,7 +175,7 @@ class _Team extends StatelessWidget {
 
 class _Stat extends StatelessWidget {
   final String label, value;
-  const _Stat(this.label, this.value, {super.key});
+  const _Stat(this.label, this.value, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -192,7 +192,7 @@ class _PredictionCard extends StatelessWidget {
   final bool? result;
   final ValueChanged<String> onSelect;
 
-  const _PredictionCard({required this.title, required this.question, required this.options, required this.selected, required this.locked, required this.result, required this.answer, required this.onSelect, super.key});
+  const _PredictionCard({required this.title, required this.question, required this.options, required this.selected, required this.locked, required this.result, required this.answer, required this.onSelect, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Container(
@@ -217,7 +217,7 @@ class _PredictionCard extends StatelessWidget {
 class _Leader extends StatelessWidget {
   final String rank, name, xp;
   final bool you;
-  const _Leader({required this.rank, required this.name, required this.xp, this.you = false, super.key});
+  const _Leader({required this.rank, required this.name, required this.xp, this.you = false, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => Container(
         margin: const EdgeInsets.symmetric(vertical: 6),
