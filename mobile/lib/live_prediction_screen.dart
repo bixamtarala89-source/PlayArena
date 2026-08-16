@@ -26,9 +26,9 @@ class _LivePredictionScreenState extends State<LivePredictionScreen> {
   final questions = const <Question>[
     Question('Powerplay Score', 'India score after 6 overs?', ['0–39', '40–49', '50–59', '60+'], '50–59', 1),
     Question('Powerplay Wickets', 'India wickets after 6 overs?', ['0', '1', '2', '3+'], '1', 1),
-    Question('10 Over Score', 'India score after 10 overs?', ['0–49', '50–69', '70–89', '90+'], '84/2', 2),
+    Question('10 Over Score', 'India score after 10 overs?', ['0–49', '50–69', '70–89', '90+'], '70–89', 2),
     Question('Top Scorer', 'Who will be top scorer (India)?', ['Batter A', 'Batter B', 'Batter C', 'Other'], 'Batter A', 2),
-    Question('15 Over Score', 'India score after 15 overs?', ['<120', '120-139', '140-159', '160+'], '137/3', 3),
+    Question('15 Over Score', 'India score after 15 overs?', ['<120', '120-139', '140-159', '160+'], '140-159', 3),
     Question('Bowling Change', 'Will a spinner bowl in over 7?', ['Yes', 'No'], 'Yes', 3),
     Question('20 Over Score', 'India final T20 score?', ['<160', '160-179', '180-199', '200+'], '188/6', 4),
     Question('Match Result', 'Will India win the match?', ['Yes', 'No', 'Tie', 'No result'], 'Yes', 5),
@@ -139,7 +139,19 @@ class _LivePredictionScreenState extends State<LivePredictionScreen> {
                 const SizedBox(height: 8),
                 _Leader(rank: '1', name: 'CricketFan', xp: '240', you: true),
                 const SizedBox(height: 12),
-                Container(padding: const EdgeInsets.all(14), decoration: BoxDecoration(color: _surface, borderRadius: BorderRadius.circular(14)), child: const Column(children: [Icon(Icons.verified_user_outlined, color: _teal)])),
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(color: _surface, borderRadius: BorderRadius.circular(14)),
+                  child: const Column(
+                    children: [
+                      Icon(Icons.verified_user_outlined, color: _teal),
+                      SizedBox(height: 6),
+                      Text('FREE-PLAY SIMULATION', style: TextStyle(fontWeight: FontWeight.w900)),
+                      SizedBox(height: 4),
+                      Text('100 XP + 25 virtual reward chips per correct prediction. No cash value, withdrawal, or redemption.', textAlign: TextAlign.center, style: TextStyle(fontSize: 10, color: Colors.white54))
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -151,7 +163,14 @@ class _Team extends StatelessWidget {
   final String name, score, overs;
   const _Team({required this.name, required this.score, required this.overs, super.key});
   @override
-  Widget build(BuildContext context) => Column(children: [Text(name), Text(score), Text(overs)]);
+  Widget build(BuildContext context) => Column(
+    children: [
+      Text(name, style: const TextStyle(fontWeight: FontWeight.w900)),
+      const SizedBox(height: 4),
+      Text(score, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: _amber)),
+      Text(overs, style: const TextStyle(fontSize: 9, color: Colors.white54))
+    ],
+  );
 }
 
 class _Stat extends StatelessWidget {
