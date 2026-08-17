@@ -124,7 +124,7 @@ class _LivePredictionScreenState extends State<LivePredictionScreen> {
                         ],
                       ),
                       const SizedBox(height: 12),
-                      Row(children: [Expanded(child: _Stat('PICKS', '${picks.length}/8')), const SizedBox(width: 7), Expanded(child: _Stat('CORRECT', '${results.values.where((v) => v).length}'))][...]
+                      Row(children: [Expanded(child: _Stat('PICKS', '${picks.length}/8')), const SizedBox(width: 7), Expanded(child: _Stat('CORRECT', '${results.values.where((v) => v).length}'))]),
                       const SizedBox(height: 12),
                       Row(children: [ElevatedButton(onPressed: advance, child: const Text('Advance')), const SizedBox(width: 8), ElevatedButton(onPressed: reset, child: const Text('Reset'))]),
                     ],
@@ -133,7 +133,7 @@ class _LivePredictionScreenState extends State<LivePredictionScreen> {
                 const SizedBox(height: 16),
                 const Text('PREDICTION LOBBY', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, color: _teal, letterSpacing: 1)),
                 const SizedBox(height: 8),
-                Column(children: questions.map((q) => _PredictionCard(title: q.title, question: q.question, options: q.options, selected: picks[q.title], locked: locked.contains(q.title), result:[...]
+                Column(children: questions.map((q) => _PredictionCard(title: q.title, question: q.question, options: q.options, selected: picks[q.title], locked: locked.contains(q.title), result: results[q.title], answer: locked.contains(q.title) ? q.answer : null, onSelect: (v) => choose(q.title, v))).toList()),
                 const SizedBox(height: 12),
                 const Text('MATCH LEADERBOARD', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w900, color: _teal, letterSpacing: 1)),
                 const SizedBox(height: 8),
@@ -148,7 +148,7 @@ class _LivePredictionScreenState extends State<LivePredictionScreen> {
                       SizedBox(height: 6),
                       Text('FREE-PLAY SIMULATION', style: TextStyle(fontWeight: FontWeight.w900)),
                       SizedBox(height: 4),
-                      Text('100 XP + 25 virtual reward chips per correct prediction. No cash value, withdrawal, or redemption.', textAlign: TextAlign.center, style: TextStyle(fontSize: 10, color:[...]
+                      Text('100 XP + 25 virtual reward chips per correct prediction. No cash value, withdrawal, or redemption.', textAlign: TextAlign.center, style: TextStyle(fontSize: 10, color: Colors.white54))
                     ],
                   ),
                 ),
@@ -159,14 +159,28 @@ class _LivePredictionScreenState extends State<LivePredictionScreen> {
       );
 }
 
+class _Team extends StatelessWidget {
+  final String name, score, overs;
+  const _Team({required this.name, required this.score, required this.overs, Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) => Column(
+    children: [
+      Text(name, style: const TextStyle(fontWeight: FontWeight.w900)),
+      const SizedBox(height: 4),
+      Text(score, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: _amber)),
+      Text(overs, style: const TextStyle(fontSize: 9, color: Colors.white54))
+    ],
+  );
+}
+
 class _Stat extends StatelessWidget {
   final String label, value;
-  const _Stat(this.label, this.value, {super.key});
+  const _Stat(this.label, this.value, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         decoration: BoxDecoration(color: _surface, borderRadius: BorderRadius.circular(8)),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(label, style: const TextStyle(color: Colors.white60, fontSize: 10)), const SizedBox(height: 4), Text(value, sty[...]
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [Text(label, style: const TextStyle(color: Colors.white60, fontSize: 10)), const SizedBox(height: 4), Text(value, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700))]),
       );
 }
 
@@ -178,7 +192,7 @@ class _PredictionCard extends StatelessWidget {
   final bool? result;
   final ValueChanged<String> onSelect;
 
-  const _PredictionCard({required this.title, required this.question, required this.options, required this.selected, required this.locked, required this.result, required this.answer, required this.onSelect, super.key});
+  const _PredictionCard({required this.title, required this.question, required this.options, required this.selected, required this.locked, required this.result, required this.answer, required this.onSelect, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) => Container(
@@ -186,7 +200,7 @@ class _PredictionCard extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(color: _surface, borderRadius: BorderRadius.circular(12)),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800)), if (locked) const Icon(Icons.loc[...]
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text(title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w800)), if (locked) const Icon(Icons.lock, color: Colors.white30)]),
           const SizedBox(height: 6),
           Text(question, style: const TextStyle(color: Colors.white70)),
           const SizedBox(height: 8),
@@ -203,12 +217,12 @@ class _PredictionCard extends StatelessWidget {
 class _Leader extends StatelessWidget {
   final String rank, name, xp;
   final bool you;
-  const _Leader({required this.rank, required this.name, required this.xp, this.you = false, super.key});
+  const _Leader({required this.rank, required this.name, required this.xp, this.you = false, Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) => Container(
         margin: const EdgeInsets.symmetric(vertical: 6),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(color: _surface, borderRadius: BorderRadius.circular(12)),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text('#$rank $name', style: const TextStyle(color: Colors.white)), Text('$xp XP', style: const TextStyle(color: Co[...]
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [Text('#$rank $name', style: const TextStyle(color: Colors.white)), Text('$xp XP', style: const TextStyle(color: Colors.white60))]),
       );
 }
